@@ -35,4 +35,28 @@
   // Current year in footer
   var yr = document.querySelector('[data-year]');
   if (yr) yr.textContent = new Date().getFullYear();
+
+  // Live Instagram feed (LightWidget). Activates only when a widget ID is set
+  // on #igFeed[data-ig-widget]. Until then, the branded fallback grid shows.
+  var feed = document.getElementById('igFeed');
+  if (feed) {
+    var wid = (feed.getAttribute('data-ig-widget') || '').trim();
+    if (wid) {
+      var fallback = feed.querySelector('[data-fallback]');
+      if (fallback) fallback.remove();
+
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://lightwidget.com/widgets/' + wid + '.html';
+      iframe.scrolling = 'no';
+      iframe.allowTransparency = 'true';
+      iframe.className = 'lightwidget-widget';
+      iframe.style.cssText = 'width:100%;border:0;overflow:hidden;';
+      feed.appendChild(iframe);
+
+      var lw = document.createElement('script');
+      lw.src = 'https://cdn.lightwidget.com/widgets/lightwidget.js';
+      lw.async = true;
+      document.body.appendChild(lw);
+    }
+  }
 })();
